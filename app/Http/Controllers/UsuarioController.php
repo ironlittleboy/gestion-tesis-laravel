@@ -17,7 +17,15 @@ class UsuarioController extends Controller
         //
         return response()->json([
             'message' => 'users list',
-            'data' => Usuario::with('rol', 'tesis')->get()
+            'data' => Usuario::with([
+                'rol',
+                'tesis',
+                'tesis.calificacion',
+                'tesis.estudiante',
+                'tesis.estudianteCompanero',
+                'tesis.tutor'
+                
+            ])->get()
             // si el usuario tiene una tesis, se mostrara en la respuesta, y contara como aprovado
         ]);
     }

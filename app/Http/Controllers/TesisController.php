@@ -16,7 +16,13 @@ class TesisController extends Controller
 
         return response()->json([
             'message' => 'Lista de tesis',
-            'tesis' => Tesis::with('estudiante', 'tutor')->get()
+            'tesis' => Tesis::with([
+                'estudiante',
+                'estudianteCompanero',
+                'tutor',
+                'comentarios',
+                'calificacion'
+            ])->get()
         ]);
     }
 
