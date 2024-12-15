@@ -18,8 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('id_docente_tutor');
             $table->timestamps();
             // Definir las llaves foráneas
-            $table->foreign('id_estudiante')->references('id')->on('usuarios')->onDelete('cascade');
-            $table->foreign('id_docente_tutor')->references('id')->on('usuarios')->onDelete('cascade');
+            $table->foreign('id_estudiante')->references('id_usuario')->on('usuarios')->onDelete('cascade');
+            $table->foreign('id_docente_tutor')->references('id_usuario')->on('usuarios')->onDelete('cascade');
         });
     }
 

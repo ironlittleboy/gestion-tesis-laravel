@@ -31,8 +31,10 @@ class TesisController extends Controller
             'id_tutor_docente' => 'required|exists:usuarios,id_usuario',
             'descripcion' => 'nullable|string',
             'ambito' => 'required|in:investigacion,desarrollo web,desarrollo movil,desarrollo videojuegos,inteligencia artificial',
+            'id_estudiante_companero' => 'nullable|exists:usuarios,id_usuario',
             'grupal' => 'required|boolean',
             'estado' => 'required|in:aprobado,rechazado,en espera',
+            // cuando el estudainte propone, primero estara en espera, luego el tutor lo aprueba o rechaza
         ]);
 
         $idTutorDocente = $request->id_tutor_docente;
@@ -45,10 +47,6 @@ class TesisController extends Controller
                     'message' => 'El Id pasado en id_docente_tutor no es un docente, solo los docentes pueden ser tutores'
                 ]);
             }
-        } else {
-            return response()->json([
-                'message' => 'El usuario no existe'
-            ]);
         }
 
         // asegurarse que el id de estudiante sea de un estudiante 
@@ -58,10 +56,6 @@ class TesisController extends Controller
                     'message' => 'El Id pasado en id_estudiante no es un estudiante, solo los estudiantes pueden registrar tesis'
                 ]);
             }
-        } else {
-            return response()->json([
-                'message' => 'El usuario no existe'
-            ]);
         }
 
 
@@ -76,11 +70,24 @@ class TesisController extends Controller
         $tesis->titulo = $request->titulo;
         $tesis->id_estudiante = $request->id_estudiante;
         $tesis->id_tutor_docente = $request->id_tutor_docente;
+        $tesis->id_estudiante_companero = $request->id_estudiante_companero;
+        $tesis->descripcion = $request->descripcion;
+        $tesis->ambito = $request->ambito;
+        $tesis->grupal = $request->grupal;
+        $tesis->estado = $request->estado;
         $tesis->save();
 
         return response()->json([
             'message' => 'Tesis creada correctamente',
             'tesis' => $tesis
+        ]);
+    }
+
+    // obtener tesis con estudiantes, tutores y calificaciones por id
+    public function tesisWithAllById(string $id) {
+        return response()->json([
+            'message' => 'Lista de tesis con estudiantes, tutores y calificaciones',
+            'tesis' => Tesis::with(['tesis', 'estudiante', 'tutor'])->find($id)
         ]);
     }
 

@@ -43,6 +43,7 @@ Route::middleware([JwtMiddleware::class])->group(function () {
   Route::get('/tesis/{id}', [TesisController::class, 'show']);
   Route::put('/tesis/{id}', [TesisController::class, 'update']);
   Route::delete('/tesis/{id}', [TesisController::class, 'destroy']);
+  Route::get('/tesis/withAll/{id}', [TesisController::class, 'getWithAllById']);
   // rutas para obtener las listas de tesis con estudiante y tutor
   Route::get('/tesis/estudiante_tutor', [TesisController::class, 'tesisWithEstudianteAndTutor']);
   // rutas para obtener una tesis con estudiante y tutor por id

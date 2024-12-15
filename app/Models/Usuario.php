@@ -56,6 +56,11 @@ class Usuario extends Authenticatable implements JWTSubject
 
     public function tesisTutor()
     {
-        return $this->hasMany(Tesis::class, 'id_tutor_docente', 'id_usuario');
+        return $this->hasOne(Tesis::class, 'id_tutor_docente', 'id_usuario');
+    }
+
+    public function estudiantesCompanero()
+    {
+        return $this->hasOne(Tesis::class, 'id_estudiante_companero', 'id_usuario');
     }
 }

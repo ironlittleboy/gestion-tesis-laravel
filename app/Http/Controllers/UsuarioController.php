@@ -17,7 +17,8 @@ class UsuarioController extends Controller
         //
         return response()->json([
             'message' => 'users list',
-            'data' => Usuario::with('rol')->get()
+            'data' => Usuario::with('rol', 'tesis')->get()
+            // si el usuario tiene una tesis, se mostrara en la respuesta, y contara como aprovado
         ]);
     }
 
@@ -50,13 +51,20 @@ class UsuarioController extends Controller
         
     }
 
+    public function getUserWithTesisAndCalifications(string $id) {
+        $usuario = Usuario::with(['tesis.calificacion'])->find($id);
+        return response()->json([
+            'message' => 'Usuario encontrado',
+            'usuario' => $usuario
+        ]);
+    }
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
         // find the user by id with the rol
-        $usuario = Usuario::with('rol')->find($id);
+        $usuario = Usuario::with('rol', 'tesis')->find($id);
 
         if (!$usuario) {
             return response()->json([
